@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Router {
+  routerId  String    @id @db.Uuid @map("router_id")
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  sensors Sensor[]
+
+  @@map("routers")
+}
+
+model Sensor {
+  sensorId  String    @id @db.Uuid @map("sensor_id")
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  router   Router @relation(fields: [routerId], references: [routerId])
+  routerId String @db.Uuid @map("router_id")
+
+  @@map("sensors")
+}

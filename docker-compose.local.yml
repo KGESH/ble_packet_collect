@@ -1,0 +1,26 @@
+version: '3.1'
+services:
+  mqtt:
+    image: eclipse-mosquitto
+    container_name: mqtt_broker
+    restart: always
+    ports:
+      - '1883:1883'
+      - '9001:9001'
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+
+  db:
+    image: postgres
+    container_name: example_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: example_db
+    ports:
+      - '5444:5432'
+#    volumes:
+#      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
