@@ -7,5 +7,6 @@ import { PrismaModule } from '../database/prisma/prisma.module';
   imports: [PrismaModule],
   controllers: [RouterController],
   providers: [RouterService],
+  exports: [RouterService],
 })
 export class RouterModule {}
