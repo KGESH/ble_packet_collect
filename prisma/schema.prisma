@@ -29,8 +29,31 @@ model Sensor {
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  router   Router @relation(fields: [routerId], references: [routerId])
-  routerId String @db.Uuid @map("router_id")
+  router   Router   @relation(fields: [routerId], references: [routerId])
+  routerId String   @db.Uuid @map("router_id")
+  packets  Packet[]
 
   @@map("sensors")
+}
+
+model Event {
+  eventId Int    @id @default(autoincrement())
+  name    String
+
+  packets Packet[]
+
+  @@map("events")
+}
+
+model Packet {
+  packetId  String   @id @db.Uuid @map("packet_id")
+  payload   String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  sensorId String @db.Uuid @map("sensor_id")
+  sensor   Sensor @relation(fields: [sensorId], references: [sensorId])
+  eventId  Int    @db.Integer @map("event_id")
+  event    Event  @relation(fields: [eventId], references: [eventId])
+
+  @@map("packets")
 }
