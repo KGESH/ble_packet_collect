@@ -12,14 +12,18 @@ describe('PrismaService', () => {
     service = module.get<PrismaService>(PrismaService);
   });
 
+  //remove data after test
+  afterEach(async () => {
+    await service.router.deleteMany();
+    await service.sensor.deleteMany();
+  });
+
   it('should be able to create a router', async () => {
     const uuid = 'f5e5b5d5-5b5d-5b5d-5b5d-5b5d5b5d5b5d';
     const router = await service.router.create({
       data: {
         routerId: uuid,
         name: 'test',
-        createdAt: new Date(),
-        updatedAt: new Date(),
       },
     });
     expect(router.routerId).toEqual(uuid);
@@ -39,8 +43,6 @@ describe('PrismaService', () => {
       data: {
         sensorId: uuid,
         name: 'test',
-        createdAt: new Date(),
-        updatedAt: new Date(),
         routerId: 'f5e5b5d5-5b5d-5b5d-5b5d-5b5d5b5d5b5d',
       },
     });
